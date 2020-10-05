@@ -19,7 +19,7 @@ public class Caretaker {
 
     public void save(Memento memento){
         try {
-            mementos.push((Memento) memento.clone());
+            mementos.push(memento.clone());
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
