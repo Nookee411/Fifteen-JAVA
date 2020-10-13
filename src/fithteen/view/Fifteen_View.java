@@ -1,19 +1,21 @@
-package fithteen.UI;
+package fithteen.view;
 
 import fithteen.engine.core.Game;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EmptyStackException;
 
-public class Fifteen_UI extends JFrame {
-    private JPanel gamePanel = new JPanel(new GridLayout(4, 4, 2, 2));
-    private Game game = new Game(4);
-    private int turns = 0;
+public class Fifteen_View extends JFrame {
+    private final JPanel gamePanel = new JPanel(new GridLayout(4, 4, 2, 2));
+    private final JPanel statusBar = new JPanel(new BorderLayout());
+    private final Game game = new Game(4);
+    private final int turns = 0;
 
-    public Fifteen_UI(){
+    public Fifteen_View(){
         super("Fifteen");
         setBounds(200,200,500,500);
         setResizable(false);
@@ -24,8 +26,18 @@ public class Fifteen_UI extends JFrame {
         Container container = getContentPane();
         gamePanel.setDoubleBuffered(true);
         container.add(gamePanel);
+        statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        this.add(statusBar, BorderLayout.SOUTH);
+        statusBar.setPreferredSize(new Dimension(this.getWidth(), 16));
+        statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.X_AXIS));
 
+        setClickCounter();
         newGame();
+    }
+    private void setClickCounter(){
+        statusBar.removeAll();
+        statusBar.add(new JLabel("Clicks: "+ game.getTurns()));
+        JLabel statusLabel = new JLabel("Clicks: ");
     }
 
     private void createMenu() {
@@ -49,7 +61,7 @@ public class Fifteen_UI extends JFrame {
     }
 
     private void generate(){
-        for(int i=0;i<2;i++) {
+        for(int i=0;i<1000;i++) {
             game.makeRandomTurn();
         }
         repaintField();
@@ -103,6 +115,9 @@ public class Fifteen_UI extends JFrame {
                     JOptionPane.showMessageDialog(null, "You Won!");
                     newGame();
                 }
+            statusBar.remove(0);
+            statusBar.add(new JLabel("Clicks: "+ game.getTurns()));
+            setClickCounter();
         }
     }
 
@@ -123,5 +138,6 @@ public class Fifteen_UI extends JFrame {
         game.newGame();
         generate();
         repaintField();
+        setClickCounter();
     }
 }

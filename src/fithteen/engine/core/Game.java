@@ -7,7 +7,8 @@ import java.util.Random;
 
 public class Game {
     private int[][] field;
-    private Caretaker saves;
+    private final Caretaker saves;
+    private int turns;
 
     public Game(int size){
         this.field = new int[size][size];
@@ -15,6 +16,11 @@ public class Game {
             field[i/size][i%size] = i;
         }
         this.saves = new Caretaker();
+        this.turns = 0;
+    }
+
+    public int getTurns() {
+        return turns;
     }
 
     public int[][] getField() {
@@ -40,6 +46,8 @@ public class Game {
     }
 
     public Boolean makeTurn(Integer value){
+
+        turns++;
         Pair<Integer> coord =getPositionFromValue(value);
         int i = coord.first;
         int j = coord.second;
@@ -56,7 +64,6 @@ public class Game {
         int temp = field[coord.first][coord.second];
         field[coord.first][coord.second] = field[i][j];
         field[i][j] = temp;
-
         return (i==coord.first&&j==coord.second);
     }
 
@@ -77,6 +84,7 @@ public class Game {
                 getSize()-1);
         int value = getValueFromPosition(zeroPosition.first,zeroPosition.second);
         makeTurn(value);
+        turns= 0;
 
     }
 
@@ -89,6 +97,7 @@ public class Game {
     }
 
     public void newGame(){
+        turns =0;
         saves.refresh();
         setFieldToDefault();
     }
